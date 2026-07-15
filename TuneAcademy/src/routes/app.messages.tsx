@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/tuneacademy/AppShell";
 import { MessagesScreen } from "@/components/tuneacademy/MessagesScreen";
+import { Pill } from "@/components/tuneacademy/Pill";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import { useAuth } from "@/contexts/AuthContext";
 
 type Search = { chat?: string };
@@ -12,7 +14,8 @@ export const Route = createFileRoute("/app/messages")({
 });
 
 function MessagesTab() {
-   const { userDoc } = useAuth();
+   const { userDoc, isGuest } = useAuth();
+   const { requireAccount } = useRequireAccount();
    const isInstructor = userDoc?.role === "instructor";
    const { chat } = Route.useSearch();
 
@@ -27,7 +30,19 @@ function MessagesTab() {
             </p>
          </header>
 
-         <MessagesScreen initialChatId={chat} />
+         {isGuest ? (
+            <div className="mt-10 flex flex-col items-start gap-4 rounded-xl border border-[#fffdf5]/15 bg-[#fffdf5]/4 p-8">
+               <p className="max-w-md text-sm leading-relaxed text-[#e8f4df]/80">
+                  Messaging is where learners and instructors coordinate lessons, share progress, and follow up on Riffs.
+                  Create a free account to start a conversation.
+               </p>
+               <Pill type="button" onClick={() => requireAccount()}>
+                  Create an account
+               </Pill>
+            </div>
+         ) : (
+            <MessagesScreen initialChatId={chat} />
+         )}
       </AppShell>
    );
 }

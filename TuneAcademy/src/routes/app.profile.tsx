@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import { brandTheme } from "@/lib/theme";
 import { getFirestoreDb, getFirebaseStorage } from "@/lib/firebase";
 import { useFirestoreUserDoc } from "@/hooks/useFirestoreUserDoc";
@@ -61,7 +62,7 @@ const profileSearchSchema = z.object({ editBio: z.enum(["1"]).optional() });
 export const Route = createFileRoute("/app/profile")({
    validateSearch: (raw) => profileSearchSchema.parse(raw ?? {}),
    head: () => ({ meta: [{ title: "Profile — TuneAcademy" }] }),
-   component: ProfileTab,
+   component: ProfileRoute,
 });
 
 function initialsFromName(name: string | undefined, email: string | undefined): string {
@@ -119,6 +120,30 @@ function InstructorStarRating({ averageOutOf5, reviewCount }: { averageOutOf5: n
          </p>
       </div>
    );
+}
+
+function ProfileRoute() {
+   const { isGuest } = useAuth();
+   const { requireAccount } = useRequireAccount();
+   if (isGuest) {
+      return (
+         <AppShell>
+            <header className="pt-8">
+               <h1 className="text-3xl font-black tracking-tight text-[#fffdf5]">Profile</h1>
+            </header>
+            <div className="mt-10 flex flex-col items-start gap-4 rounded-xl border border-[#fffdf5]/15 bg-[#fffdf5]/4 p-8">
+               <p className="max-w-md text-sm leading-relaxed text-[#e8f4df]/80">
+                  Your profile holds your instruments, skill level, learning budget, and lesson history. Create a free
+                  account to set one up.
+               </p>
+               <Pill type="button" onClick={() => requireAccount()}>
+                  Create an account
+               </Pill>
+            </div>
+         </AppShell>
+      );
+   }
+   return <ProfileTab />;
 }
 
 function ProfileTab() {

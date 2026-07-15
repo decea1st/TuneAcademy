@@ -7,6 +7,7 @@ import { CommentsDrawer } from "@/components/musireels/CommentsDrawer";
 import { RecruitDialog } from "@/components/musireels/RecruitDialog";
 import { ReelVideoCard } from "@/components/musireels/ReelVideoCard";
 import { AppShell } from "@/components/tuneacademy/AppShell";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFirestoreUserDoc } from "@/hooks/useFirestoreUserDoc";
 import { useInstructorInvitationReelIds } from "@/hooks/useInstructorInvitationReelIds";
@@ -25,6 +26,7 @@ const RIFFS_VIEWPORT = "calc(100dvh - 4.5rem)";
 
 function Riffs() {
    const { user, userDoc } = useAuth();
+   const { requireAccount } = useRequireAccount();
    const { user: liveSelf } = useFirestoreUserDoc(user?.uid ?? null);
    const role = liveSelf?.role ?? userDoc?.role;
    const isInstructor = role === "instructor";
@@ -129,7 +131,7 @@ function Riffs() {
 
             <button
                type="button"
-               onClick={() => setCreateOpen(true)}
+               onClick={() => requireAccount(() => setCreateOpen(true))}
                className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom,0px)+0.75rem)] left-1/2 z-50 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg ring-1 ring-black/10 transition hover:bg-white/90"
                aria-label="Create riff"
             >

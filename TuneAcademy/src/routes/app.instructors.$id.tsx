@@ -7,6 +7,7 @@ import { Pill } from "@/components/tuneacademy/Pill";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import { formatSpecialtyLabel } from "@/hooks/useInstructorsDirectory";
 import { ensureLearnerInstructorThread } from "@/hooks/useMessaging";
 import {
@@ -65,7 +66,8 @@ function groupSeatsLeftForSlot(engagements: TutoringEngagementDoc[], slot: Weekl
 function InstructorProfile() {
   const { id } = Route.useParams();
   const nav = useNavigate();
-  const { user, userDoc } = useAuth();
+  const { user, userDoc, isGuest } = useAuth();
+  const { requireAccount } = useRequireAccount();
   const [i, setI] = useState<InstructorProfileDoc | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -282,8 +284,9 @@ function InstructorProfile() {
             <div className="grid gap-3 sm:grid-cols-2">
               <Pill
                 className="w-full"
-                disabled={!canRequestServices}
+                disabled={!canRequestServices && !isGuest}
                 onClick={() => {
+                  if (!requireAccount()) return;
                   if (!canRequestServices) {
                     toast.error("Sign in as a learner to request services.");
                     return;
@@ -300,8 +303,9 @@ function InstructorProfile() {
               <Pill
                 className="w-full"
                 variant="secondary"
-                disabled={!canDm}
+                disabled={!canDm && !isGuest}
                 onClick={() => {
+                  if (!requireAccount()) return;
                   if (!canDm) {
                     toast.error("Sign in as a learner to message instructors.");
                     return;

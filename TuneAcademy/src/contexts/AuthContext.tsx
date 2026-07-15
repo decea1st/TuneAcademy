@@ -7,13 +7,15 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { onAuthStateChanged, signInAnonymously, signOut, type User } from "firebase/auth";
 import { getFirebaseAuth } from "@/lib/firebase";
 import { getUserDoc, type UserFirestoreDoc } from "@/lib/tuneacademyFirestore";
 
 type AuthState = {
   user: User | null;
   userDoc: UserFirestoreDoc | null;
+  /** True while browsing without a real account (anonymous demo session). */
+  isGuest: boolean;
   loading: boolean;
   signOutUser: () => Promise<void>;
   refreshUserDoc: () => Promise<void>;
@@ -40,13 +42,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (typeof window === "undefined") return;
     const auth = getFirebaseAuth();
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        // Demo mode: browse the app with an anonymous session so Firestore
+        // reads (which all require auth) keep working. Writes stay gated
+        // behind a real account via useRequireAccount.
+        setUser(null);
+        setUserDoc(null);
+        try {
+          await signInAnonymously(auth);
+          return; // onAuthStateChanged fires again with the anonymous user
+        } catch {
+          setLoading(false); // offline or provider disabled: fall through logged-out
+          return;
+        }
+      }
       setUser(firebaseUser);
       try {
-        if (firebaseUser) {
-          setUserDoc(await getUserDoc(firebaseUser.uid));
-        } else {
-          setUserDoc(null);
-        }
+        setUserDoc(firebaseUser.isAnonymous ? null : await getUserDoc(firebaseUser.uid));
       } catch {
         setUserDoc(null);
       }
@@ -60,9 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUserDoc(null);
   }, []);
 
+  const isGuest = !user || user.isAnonymous;
+
   const value = useMemo(
-    () => ({ user, userDoc, loading, signOutUser, refreshUserDoc }),
-    [user, userDoc, loading, signOutUser, refreshUserDoc],
+    () => ({ user, userDoc, isGuest, loading, signOutUser, refreshUserDoc }),
+    [user, userDoc, isGuest, loading, signOutUser, refreshUserDoc],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

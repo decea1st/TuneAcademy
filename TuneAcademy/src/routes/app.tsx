@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { AppNav } from "@/components/tuneacademy/AppNav";
 import { ChatbotFab } from "@/components/tuneacademy/ChatbotFab";
 import { useAuth } from "@/contexts/AuthContext";
+import { RequireAccountProvider } from "@/components/tuneacademy/RequireAccount";
 import { getInstructorDoc, instructorOnboardingComplete } from "@/lib/tuneacademyFirestore";
 import { useEffect, useState } from "react";
 import { Pill } from "@/components/tuneacademy/Pill";
@@ -10,25 +11,18 @@ export const Route = createFileRoute("/app")({ component: AppLayout });
 
 function AppLayout() {
    const nav = useNavigate();
-   const { user, userDoc, loading, signOutUser } = useAuth();
+   const { user, userDoc, isGuest, loading, signOutUser } = useAuth();
    const [instructorCheck, setInstructorCheck] = useState<"pending" | "ready">("pending");
-   const bypassAuth = import.meta.env.VITE_BYPASS_AUTH === "true";
 
    useEffect(() => {
-      if (bypassAuth) {
-         setInstructorCheck("ready");
-         return;
-      }
       if (loading) return;
-      if (!user) {
-         void nav({ to: "/login", replace: true });
-         return;
-      }
-      if (!userDoc) {
+      if (isGuest) {
+         // Demo mode: guests browse everything; writes are gated by useRequireAccount.
          setInstructorCheck("ready");
          return;
       }
-      if (userDoc.role !== "instructor") {
+      if (!user) return;
+      if (!userDoc || userDoc.role !== "instructor") {
          setInstructorCheck("ready");
          return;
       }
@@ -36,13 +30,13 @@ function AppLayout() {
          if (instructorOnboardingComplete(inst)) setInstructorCheck("ready");
          else void nav({ to: "/onboarding", replace: true });
       });
-   }, [bypassAuth, loading, user, userDoc, nav]);
+   }, [loading, isGuest, user, userDoc, nav]);
 
-   if (!bypassAuth && (loading || !user)) {
+   if (loading) {
       return <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">Loading…</div>;
    }
 
-   if (!bypassAuth && !userDoc) {
+   if (!isGuest && !userDoc) {
       return (
          <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
             <p className="max-w-sm text-sm text-muted-foreground">
@@ -61,15 +55,17 @@ function AppLayout() {
       );
    }
 
-   if (!bypassAuth && userDoc && userDoc.role === "instructor" && instructorCheck === "pending") {
+   if (!isGuest && userDoc && userDoc.role === "instructor" && instructorCheck === "pending") {
       return <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">Loading…</div>;
    }
 
    return (
-      <div className="min-h-screen bg-background text-foreground">
-         <Outlet />
-         <ChatbotFab />
-         <AppNav />
-      </div>
+      <RequireAccountProvider>
+         <div className="min-h-screen bg-background text-foreground">
+            <Outlet />
+            <ChatbotFab />
+            <AppNav />
+         </div>
+      </RequireAccountProvider>
    );
 }

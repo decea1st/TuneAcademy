@@ -188,6 +188,11 @@ function SignupPage() {
               Log in
             </Link>
           </p>
+          <p className="mt-2 text-center text-sm text-[#e8f4df]/70">
+            <Link to="/app" className="underline underline-offset-4 transition hover:text-[#fffdf5]">
+              or explore the app without an account →
+            </Link>
+          </p>
         </motion.section>
       </div>
     </div>

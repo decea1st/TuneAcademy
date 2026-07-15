@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useComments } from "@/hooks/useComments";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export function CommentsDrawer({ reel, open, onOpenChange }: Props) {
+  const { requireAccount } = useRequireAccount();
   const reelId = reel?.id ?? null;
   const { comments, loading, addComment } = useComments(reelId);
   const [draft, setDraft] = useState("");
@@ -39,6 +41,7 @@ export function CommentsDrawer({ reel, open, onOpenChange }: Props) {
   }, [open, comments.length]);
 
   const send = async () => {
+    if (!requireAccount()) return;
     const t = draft.trim();
     if (!t || !reelId) return;
     setSending(true);

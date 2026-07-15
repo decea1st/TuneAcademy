@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function Avatar({
@@ -11,8 +12,9 @@ export function Avatar({
   size?: number;
   className?: string;
 }) {
+  const [failed, setFailed] = useState(false);
   const url = src?.trim();
-  if (url) {
+  if (url && !failed) {
     return (
       <div
         className={cn(
@@ -21,7 +23,12 @@ export function Avatar({
         )}
         style={{ width: size, height: size }}
       >
-        <img src={url} alt="" className="h-full w-full object-cover rounded-[inherit]" />
+        <img
+          src={url}
+          alt=""
+          className="h-full w-full object-cover rounded-[inherit]"
+          onError={() => setFailed(true)}
+        />
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Heart, Loader2, MessageCircle, Play, UserPlus } from "lucide-react";
 import { InstrumentIcon } from "@/components/tuneacademy/InstrumentIcon";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
 import type { Instrument } from "@/lib/mockData";
 import { useLike } from "@/hooks/useLike";
 import type { Reel } from "@/types";
@@ -44,8 +45,10 @@ export function ReelVideoCard({
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const userPausedRef = useRef(false);
+  const { requireAccount } = useRequireAccount();
   const { isLiked, likesCount, toggleLike } = useLike(reel, currentUserId);
   const [buffering, setBuffering] = useState(true);
+  const [videoFailed, setVideoFailed] = useState(false);
   const [likePulse, setLikePulse] = useState(0);
   const [manualPauseUi, setManualPauseUi] = useState(false);
   /** Unmute only after a tap on the video so autoplay stays allowed while browsing. */
@@ -122,13 +125,20 @@ export function ReelVideoCard({
           e.stopPropagation();
           togglePausePlay();
         }}
-        onLoadStart={() => setBuffering(true)}
+        onLoadStart={() => { setBuffering(true); setVideoFailed(false); }}
         onCanPlay={() => setBuffering(false)}
         onWaiting={() => setBuffering(true)}
         onPlaying={() => setBuffering(false)}
+        onError={() => { setBuffering(false); setVideoFailed(true); }}
       />
 
-      {buffering && isActive && reel.videoUrl ? (
+      {videoFailed && isActive ? (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 px-8 text-center">
+          <p className="text-sm text-white/80">This video could not be loaded.</p>
+        </div>
+      ) : null}
+
+      {buffering && !videoFailed && isActive && reel.videoUrl ? (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
         </div>
@@ -181,6 +191,7 @@ export function ReelVideoCard({
           type="button"
           onClick={(e) => {
             e.stopPropagation();
+            if (!requireAccount()) return;
             if (!isLiked) setLikePulse((n) => n + 1);
             void toggleLike();
           }}

@@ -23,8 +23,8 @@ const instructorNavTabs = [
 
 export function AppNav() {
    const { pathname } = useLocation();
-   const { user, userDoc } = useAuth();
-   const hasUnread = useUnreadDot(user?.uid);
+   const { user, userDoc, isGuest } = useAuth();
+   const hasUnread = useUnreadDot(isGuest ? undefined : user?.uid);
    const tabs = userDoc?.role === "instructor" ? instructorNavTabs : learnerNavTabs;
    return (
       <nav className="fixed inset-x-0 top-0 z-40 border-b border-[#fffdf5]/15 bg-[#0b1510]/86 backdrop-blur-xl">
@@ -54,6 +54,14 @@ export function AppNav() {
                      </Link>
                   );
                })}
+               {isGuest && (
+                  <Link
+                     to="/signup"
+                     className="ml-2 flex items-center justify-center rounded-lg bg-[#ffd666] px-5 py-3 text-xs font-bold uppercase tracking-wide text-[#0b1510] transition-colors hover:bg-[#ffe08f]"
+                  >
+                     Sign up
+                  </Link>
+               )}
             </div>
          </div>
       </nav>

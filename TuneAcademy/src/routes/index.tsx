@@ -76,7 +76,7 @@ function Welcome() {
 
         <main className="grid flex-1 items-center gap-10 py-12 xl:grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] xl:py-8">
           <motion.section
-            className="max-w-4xl xl:-mt-25"
+            className="max-w-4xl justify-self-center pl-6 sm:pl-12 xl:-mt-25 xl:justify-self-auto xl:pl-0"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -113,10 +113,18 @@ function Welcome() {
                 </Pill>
               </Link>
             </div>
+
+            <Link
+              to="/app"
+              className={`mt-5 inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 transition hover:underline ${brandTheme.inkSoft}`}
+            >
+              or explore the app without an account
+              <span aria-hidden>→</span>
+            </Link>
           </motion.section>
 
           <motion.section
-            className="relative min-h-150 w-full max-w-140 justify-self-center xl:min-h-140 xl:justify-self-end"
+            className="relative hidden min-h-150 w-full max-w-140 justify-self-center xl:block xl:min-h-140 xl:justify-self-end"
             initial={{ opacity: 0, x: 26 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
