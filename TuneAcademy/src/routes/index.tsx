@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
 import { brandTheme, musicImages } from "@/lib/theme";
 import { motion } from "framer-motion";
@@ -54,10 +55,20 @@ function Welcome() {
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
         <header className="flex items-center justify-between">
-          <Link to="/" className={`text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}>
+          <Link
+            to="/"
+            className={`flex items-center gap-3 text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}
+          >
+            <LogoMark />
             TuneAcademy
           </Link>
           <nav className="flex items-center gap-2">
+            <Link
+              to="/app"
+              className="px-3 py-2 text-sm font-semibold text-[#fffdf5] underline underline-offset-4 transition hover:text-[#ffd666]"
+            >
+              Demo as guest
+            </Link>
             <Link
               to="/login"
               className="rounded-lg border border-[#fffdf5]/30 px-4 py-2 text-sm font-semibold text-[#fffdf5] transition hover:border-[#fffdf5] hover:bg-[#fffdf5] hover:text-[#0b1510]"

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
 import { formatAuthError } from "@/lib/authMessages";
 import { getFirebaseAuth } from "@/lib/firebase";
@@ -90,7 +91,11 @@ function SignupPage() {
 
       <div className="relative mx-auto grid min-h-screen w-full max-w-6xl items-center gap-10 px-5 py-6 sm:px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,460px)] lg:px-10">
         <section className="hidden lg:block">
-          <Link to="/" className={`text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}>
+          <Link
+            to="/"
+            className={`flex w-fit items-center gap-3 text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}
+          >
+            <LogoMark />
             TuneAcademy
           </Link>
           <motion.div

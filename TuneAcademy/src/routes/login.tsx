@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatAuthError } from "@/lib/authMessages";
@@ -18,15 +19,15 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, isGuest, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (loading || !user) return;
+    if (loading || !user || isGuest) return;
     void resolvePostLoginPath(user.uid).then((path) => nav({ to: path, replace: true }));
-  }, [loading, user, nav]);
+  }, [loading, user, isGuest, nav]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -58,7 +59,7 @@ function LoginPage() {
     }
   }
 
-  if (!loading && user) {
+  if (!loading && !isGuest) {
     return (
       <div className={`flex min-h-screen items-center justify-center text-sm ${brandTheme.page}`}>
         Redirecting...
@@ -78,7 +79,11 @@ function LoginPage() {
 
       <div className="relative mx-auto grid min-h-screen w-full max-w-6xl items-center gap-10 px-5 py-6 sm:px-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,440px)] lg:px-10">
         <section className="hidden lg:block">
-          <Link to="/" className={`text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}>
+          <Link
+            to="/"
+            className={`flex w-fit items-center gap-3 text-sm font-black uppercase tracking-[0.24em] ${brandTheme.ink}`}
+          >
+            <LogoMark />
             TuneAcademy
           </Link>
           <motion.div

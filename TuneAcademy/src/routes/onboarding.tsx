@@ -47,7 +47,7 @@ type SessionType = "solo" | "group" | "both";
 
 function Onboarding() {
   const nav = useNavigate();
-  const { user, userDoc, loading, refreshUserDoc } = useAuth();
+  const { user, userDoc, isGuest, loading, refreshUserDoc } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState(0);
 
@@ -80,11 +80,11 @@ function Onboarding() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) {
+    if (!user || isGuest) {
       void nav({ to: "/login", replace: true });
       return;
     }
-  }, [loading, user, nav]);
+  }, [loading, user, isGuest, nav]);
 
   useEffect(() => {
     if (userDoc?.fullName) setName((prev) => prev || userDoc.fullName);

@@ -31,20 +31,31 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "TuneAcademy" },
+      {
+        name: "description",
+        content:
+          "TuneAcademy turns a recorded performance into a focused weakness profile and instructor match.",
+      },
+      { name: "theme-color", content: "#0b1510" },
+      { property: "og:site_name", content: "TuneAcademy" },
+      { property: "og:title", content: "TuneAcademy" },
+      {
+        property: "og:description",
+        content: "Record a take, find the gap, and match with the instructor who can fix it.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      // .ico first with explicit sizes so Chrome still prefers the SVG.
+      { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,

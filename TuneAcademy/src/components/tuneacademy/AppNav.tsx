@@ -1,5 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { GraduationCap, Home, MessageSquareText, Mic, PlayCircle, UserCircle, Users } from "lucide-react";
+import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnreadDot } from "@/hooks/useMessaging";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,8 @@ export function AppNav() {
    return (
       <nav className="fixed inset-x-0 top-0 z-40 border-b border-[#fffdf5]/15 bg-[#0b1510]/86 backdrop-blur-xl">
          <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-10">
-            <Link to="/app" className="text-sm font-black uppercase tracking-[0.24em] text-[#fffdf5]">
+            <Link to="/app" className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.24em] text-[#fffdf5]">
+               <LogoMark />
                TuneAcademy
             </Link>
             <div className="flex items-center gap-2">
