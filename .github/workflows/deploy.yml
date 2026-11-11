@@ -7,9 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: TuneAcademy
     steps:
       - uses: actions/checkout@v4
 
@@ -17,7 +14,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: TuneAcademy/package-lock.json
 
       - run: npm ci
 

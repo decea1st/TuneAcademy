@@ -62,33 +62,31 @@ The goal is a model that grows with the platform, one that gets smarter the more
 
 # Running TuneAcademy
 
-The Vite + TanStack app lives in the `TuneAcademy` folder.
+The Vite + TanStack app lives at the repository root.
 
 ### Run locally
 
 From the repository root:
 
 ```bash
-cd TuneAcademy
 npm install
 npm run dev
 ```
 
 After `npm run dev`, open the URL Vite prints in the terminal (usually `http://localhost:8080`).
 
-### Cloud Functions (`TuneAcademy/functions`)
+### Cloud Functions (`functions`)
 
 The Firebase Cloud Functions package also needs its own install step and a **`.env`** in that folder.
 
 From the repository root:
 
 ```bash
-cd TuneAcademy
 cd functions
 npm install
 ```
 
-Create a file named **`.env`** in **`TuneAcademy/functions`** (next to that folder’s `package.json`). Use the same variables and credential values as the project’s **`TuneAcademy/functions/.env`** (that file is for local use and should not be committed; if you are joining the team, copy the values from a teammate’s secure copy or your own Google OAuth, redirect URI, app origin, and ElevenLabs key).
+Create a file named **`.env`** in **`functions`** (next to that folder’s `package.json`). Use the same variables and credential values as the project’s **`functions/.env`** (that file is for local use and should not be committed; if you are joining the team, copy the values from a teammate’s secure copy or your own Google OAuth, redirect URI, app origin, and ElevenLabs key).
 
 | Variable | Purpose |
 | --- | --- |
@@ -112,7 +110,7 @@ Do not commit real Cloud Functions `.env` files.
 
 ### Environment variables
 
-Create a file named **`.env`** in the **`TuneAcademy`** directory (next to `package.json`). 
+Create a file named **`.env`** at the **repository root** (next to `package.json`). 
 
 #### Required for Firebase
 
@@ -132,7 +130,7 @@ These values come from the Firebase console: Project settings → Your apps → 
 | Variable | Purpose |
 | --- | --- |
 | `VITE_FIREBASE_MEASUREMENT_ID` | Google Analytics for Firebase (only if enabled for the app) |
-| `VITE_BYPASS_AUTH` | Set to `true` to skip auth checks in the app shell during local development (see `TuneAcademy/src/routes/app.tsx`) |
+| `VITE_BYPASS_AUTH` | Set to `true` to skip auth checks in the app shell during local development (see `src/routes/app.tsx`) |
 
 Example shape (replace placeholders with your own values):
 
