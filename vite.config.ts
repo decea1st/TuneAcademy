@@ -1,35 +1,29 @@
-import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [
+    // Generates src/routeTree.gen.ts from src/routes/. Must come before viteReact().
+    tanstackRouter({ target: "react", autoCodeSplitting: true }),
     tailwindcss(),
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
-    // Cloudflare Workers output is only needed for production builds (`wrangler deploy`).
-    ...(command === "build" ? [cloudflare({ viteEnvironment: { name: "ssr" } })] : []),
-    tanstackStart(),
     viteReact(),
   ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-    dedupe: [
-      "react",
-      "react-dom",
-      "react/jsx-runtime",
-      "react/jsx-dev-runtime",
-      "@tanstack/react-query",
-      "@tanstack/query-core",
-    ],
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
   server: {
-    // Keep 8080: the Cloud Functions APP_ORIGIN (OAuth redirects) points at localhost:8080.
-    port: 8080,
+    port: 5173,
+    // Forward API calls to the Spring Boot backend so the browser only ever talks to one origin.
+    proxy: {
+      "/api": "http://localhost:8080",
+    },
   },
-}));
+});

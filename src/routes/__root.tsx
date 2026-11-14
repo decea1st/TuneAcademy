@@ -1,8 +1,7 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent } from "@tanstack/react-router";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
-import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -27,59 +26,19 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRoute({
+  // Static tags (charset, viewport, description, icons) live in index.html.
+  // This is only the default tab title; pages override it with their own head().
   head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TuneAcademy" },
-      {
-        name: "description",
-        content:
-          "TuneAcademy turns a recorded performance into a focused weakness profile and instructor match.",
-      },
-      { name: "theme-color", content: "#0b1510" },
-      { property: "og:site_name", content: "TuneAcademy" },
-      { property: "og:title", content: "TuneAcademy" },
-      {
-        property: "og:description",
-        content: "Record a take, find the gap, and match with the instructor who can fix it.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      // .ico first with explicit sizes so Chrome still prefers the SVG.
-      { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-    ],
+    meta: [{ title: "TuneAcademy" }],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
   return (
     <AuthProvider>
+      <HeadContent />
       <Outlet />
       <Toaster position="top-center" richColors />
     </AuthProvider>

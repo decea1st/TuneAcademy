@@ -73,7 +73,7 @@ npm install
 npm run dev
 ```
 
-After `npm run dev`, open the URL Vite prints in the terminal (usually `http://localhost:8080`).
+After `npm run dev`, open the URL Vite prints in the terminal (usually `http://localhost:5173`).
 
 ### Cloud Functions (`functions`)
 
@@ -93,7 +93,7 @@ Create a file named **`.env`** in **`functions`** (next to that folder’s `pack
 | `GOOGLE_OAUTH_CLIENT_ID` | Google OAuth web client ID (Calendar / Meet flows) |
 | `GOOGLE_OAUTH_CLIENT_SECRET` | Google OAuth client secret |
 | `GOOGLE_OAUTH_REDIRECT_URI` | OAuth redirect URL (must match your deployed callback function URL or local emulator setup) |
-| `APP_ORIGIN` | Frontend origin used for redirects (e.g. `http://localhost:8080` when running Vite) |
+| `APP_ORIGIN` | Frontend origin used for redirects (e.g. `http://localhost:5173` when running Vite) |
 | `ELEVENLABS_API_KEY` | ElevenLabs API key for TTS |
 
 Optional: `ELEVENLABS_TTS_VOICE_ID` / `ELEVENLABS_VOICE_ID`, `ELEVENLABS_TTS_MODEL_ID`, `ANALYSIS_API_URL` (defaults exist where noted in code).
@@ -102,7 +102,7 @@ Optional: `ELEVENLABS_TTS_VOICE_ID` / `ELEVENLABS_VOICE_ID`, `ELEVENLABS_TTS_MOD
 GOOGLE_OAUTH_CLIENT_ID=
 GOOGLE_OAUTH_CLIENT_SECRET=
 GOOGLE_OAUTH_REDIRECT_URI=
-APP_ORIGIN=http://localhost:8080
+APP_ORIGIN=http://localhost:5173
 ELEVENLABS_API_KEY=
 ```
 
