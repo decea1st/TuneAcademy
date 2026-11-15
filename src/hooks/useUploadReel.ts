@@ -89,8 +89,6 @@ export function useUploadReel(): {
       const reelId = doc(collection(db, "reels")).id;
       const userId = user.uid;
 
-      await user.getIdToken(true);
-
       const videoRef = ref(storage, `reels/${userId}/${reelId}.mp4`);
       const thumbRef = ref(storage, `reelThumbnails/${userId}/${reelId}.jpg`);
 

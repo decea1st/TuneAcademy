@@ -1,12 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
-import { useAuth } from "@/contexts/AuthContext";
+import { postLoginPath, useAuth } from "@/contexts/AuthContext";
 import { formatAuthError } from "@/lib/authMessages";
-import { getFirebaseAuth } from "@/lib/firebase";
-import { resolvePostLoginPath } from "@/lib/tuneacademyFirestore";
 import { brandTheme, musicImages } from "@/lib/theme";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Music2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,43 +16,28 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const { user, isGuest, loading } = useAuth();
+  const { me, isGuest, loading, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);
 
+  // Already logged in (e.g. opened /login in a new tab): skip the form.
   useEffect(() => {
-    if (loading || !user || isGuest) return;
-    void resolvePostLoginPath(user.uid).then((path) => nav({ to: path, replace: true }));
-  }, [loading, user, isGuest, nav]);
+    if (loading || !me) return;
+    nav({ to: postLoginPath(me), replace: true });
+  }, [loading, me, nav]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
-      const auth = getFirebaseAuth();
-      await signInWithEmailAndPassword(auth, email.trim(), pw);
-      const path = await resolvePostLoginPath(auth.currentUser!.uid);
+      const user = await signIn(email.trim(), pw);
       toast.success("Welcome back");
-      nav({ to: path, replace: true });
+      nav({ to: postLoginPath(user), replace: true });
     } catch (err) {
       toast.error(formatAuthError(err));
     } finally {
       setBusy(false);
-    }
-  }
-
-  async function forgot() {
-    const trimmed = email.trim();
-    if (!trimmed) {
-      toast.error("Enter your email above first.");
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(getFirebaseAuth(), trimmed);
-      toast.success("Password reset email sent.");
-    } catch (err) {
-      toast.error(formatAuthError(err));
     }
   }
 
@@ -150,13 +132,6 @@ function LoginPage() {
               value={pw}
               onChange={setPw}
             />
-            <button
-              type="button"
-              onClick={() => void forgot()}
-              className="text-sm font-semibold text-[#e8f4df]/70 transition hover:text-[#ffd666]"
-            >
-              Forgot password?
-            </button>
             <Pill
               type="submit"
               size="lg"

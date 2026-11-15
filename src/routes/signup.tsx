@@ -1,11 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatAuthError } from "@/lib/authMessages";
-import { getFirebaseAuth } from "@/lib/firebase";
-import { createUserFirestoreDoc } from "@/lib/tuneacademyFirestore";
 import { brandTheme, musicImages } from "@/lib/theme";
-import { createUserWithEmailAndPassword, deleteUser } from "firebase/auth";
 import { useState } from "react";
 import { ArrowLeft, Music2, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -24,6 +22,7 @@ export const Route = createFileRoute("/signup")({
 function SignupPage() {
   const { role = "learner" } = Route.useSearch();
   const nav = useNavigate();
+  const { signUp } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -38,8 +37,9 @@ function SignupPage() {
       toast.error("Enter your name and email.");
       return;
     }
-    if (pw.length < 6) {
-      toast.error("Password must be at least 6 characters.");
+    // Same limits the backend enforces (BCrypt only uses the first 72 bytes).
+    if (pw.length < 8 || pw.length > 72) {
+      toast.error("Password must be 8 to 72 characters.");
       return;
     }
     if (pw !== pw2) {
@@ -48,28 +48,16 @@ function SignupPage() {
     }
 
     setBusy(true);
-    const auth = getFirebaseAuth();
     try {
-      const cred = await createUserWithEmailAndPassword(auth, mail, pw);
-      try {
-        await createUserFirestoreDoc(cred.user.uid, {
-          role,
-          fullName,
-          email: mail,
-        });
-      } catch (firestoreErr) {
-        try {
-          await deleteUser(cred.user);
-        } catch {
-          /* best effort */
-        }
-        toast.error(formatAuthError(firestoreErr));
-        return;
-      }
-
+      // One request creates the account and logs the new user in.
+      await signUp({
+        email: mail,
+        password: pw,
+        fullName,
+        role: role === "instructor" ? "INSTRUCTOR" : "LEARNER",
+      });
       toast.success("Account created");
-      if (role === "instructor") nav({ to: "/onboarding", replace: true });
-      else nav({ to: "/onboarding", replace: true });
+      nav({ to: "/onboarding", replace: true });
     } catch (err) {
       toast.error(formatAuthError(err));
     } finally {
