@@ -1,0 +1,15 @@
+# Local development: just the database. Spring Boot and Vite run on your machine.
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: tuneacademy
+      POSTGRES_USER: tuneacademy
+      POSTGRES_PASSWORD: tuneacademy # dev-only; production uses a real secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
