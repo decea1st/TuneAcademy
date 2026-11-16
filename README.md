@@ -90,3 +90,12 @@ npx tsc --noEmit             # frontend type check
 npm run build                # frontend build
 cd backend && ./mvnw test    # backend tests (Docker must be running: they start their own Postgres)
 ```
+
+### Deploy
+
+Production is one Docker image: the `Dockerfile` builds React into the Spring Boot jar, which serves both the pages and `/api`. It runs on an AWS Lightsail server next to Postgres and Caddy (HTTPS), as set up in `deploy/`.
+
+- Every pull request runs the checks above, the linter and a dependency vulnerability scan (`.github/workflows/ci.yml`).
+- Every push to `main` runs the same checks, then builds the image, pushes it to GitHub's registry and restarts the app on the server (`.github/workflows/deploy.yml`).
+
+One-time setup: the server needs Docker and a `~/tuneacademy/.env` file with `DOMAIN` and `DB_PASSWORD`, and the GitHub repository needs two secrets, `LIGHTSAIL_HOST` (the server's IP) and `LIGHTSAIL_SSH_KEY` (its private SSH key).
