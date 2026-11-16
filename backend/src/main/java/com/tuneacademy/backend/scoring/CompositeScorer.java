@@ -14,9 +14,14 @@ public class CompositeScorer implements Scorer<CompositeScorer.Result> {
 
     @Override
     public Result score(AudioAnalysis reference, AudioAnalysis student) {
-        TimingScorer.Result timing = timingScorer.score(reference, student);
         // Notes are only detected for monophonic exercises; without them there's nothing to compare.
         boolean hasNotes = reference.notes() != null && student.notes() != null;
+        // Drop the student's sounds with no pitch (clicks, coughs) before anything else. Otherwise a click
+        // before the music would be taken as the first note, and every other note lined up from it.
+        // (The reference never has any: the startup check rejects a reference with an unpitched note.)
+        if (hasNotes) student = student.pitchedOnly();
+
+        TimingScorer.Result timing = timingScorer.score(reference, student);
         NoteScorer.Result notes = hasNotes ? noteScorer.score(reference, student) : null;
         int total = notes == null ? timing.score() : (int) Math.round((timing.score() + notes.score()) / 2.0);
         return new Result(total, timing, notes);

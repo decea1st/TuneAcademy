@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -110,6 +111,23 @@ class ScoringEngineTest {
     }
 
     @Test
+    void clickBeforeTheFirstNoteDoesNotShiftTheAlignment() {
+        // The scale starting at 0.8 s, with a click at 0.1 s before it, like the mic picking up a mouse click.
+        AudioClip take = plucked(44100, 0.5, 0.8, SCALE);
+        addClick(take, 0.1);
+        AudioAnalysis analysis = analyze(take);
+
+        // The click is heard as a sound with no pitch...
+        assertEquals(0.1, analysis.noteStarts().get(0), 0.02);
+        assertNull(analysis.notes().get(0));
+
+        // ...and ignored: everything is lined up from the first real note.
+        CompositeScorer.Result result = scorer.score(REFERENCE, analysis);
+        assertEquals(100, result.totalScore());
+        assertEquals(0.3, result.timing().startOffsetSeconds(), 0.02);
+    }
+
+    @Test
     void stereoWavIsRejected() throws IOException {
         AudioFormat stereo = new AudioFormat(44100, 16, 2, true, false);
         byte[] wav = writeWav(new byte[44100 * 4], stereo); // 1 s of stereo silence
@@ -139,6 +157,15 @@ class ScoringEngineTest {
             }
         }
         return new AudioClip(samples, sampleRate);
+    }
+
+    /** Adds 3 ms of random noise at `at` seconds: a click. Seeded, so it's the same click every run. */
+    private static void addClick(AudioClip clip, double at) {
+        Random random = new Random(42);
+        int first = (int) Math.round(at * clip.sampleRate());
+        for (int i = 0; i < 0.003 * clip.sampleRate(); i++) {
+            clip.samples()[first + i] += (float) (0.5 * (random.nextDouble() * 2 - 1));
+        }
     }
 
     /** Saves a clip as a real 16-bit mono WAV file (in memory), the same format our recording page uploads. */
