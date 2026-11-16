@@ -22,10 +22,13 @@ import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppMeetingRouteImport } from './routes/app.meeting'
 import { Route as AppInstructorsRouteImport } from './routes/app.instructors'
 import { Route as AppAnalyzeRouteImport } from './routes/app.analyze'
+import { Route as AppPracticeIndexRouteImport } from './routes/app.practice.index'
 import { Route as AppInstructorsIndexRouteImport } from './routes/app.instructors.index'
+import { Route as AppPracticeExerciseIdRouteImport } from './routes/app.practice.$exerciseId'
 import { Route as AppLearnerUserIdRouteImport } from './routes/app.learner.$userId'
 import { Route as AppInstructorsIdRouteImport } from './routes/app.instructors.$id'
 import { Route as AppAnalyzeResultRouteImport } from './routes/app.analyze.result'
+import { Route as AppPracticeAttemptsAttemptIdRouteImport } from './routes/app.practice.attempts.$attemptId'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -92,10 +95,20 @@ const AppAnalyzeRoute = AppAnalyzeRouteImport.update({
   path: '/analyze',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPracticeIndexRoute = AppPracticeIndexRouteImport.update({
+  id: '/practice/',
+  path: '/practice/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInstructorsIndexRoute = AppInstructorsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppInstructorsRoute,
+} as any)
+const AppPracticeExerciseIdRoute = AppPracticeExerciseIdRouteImport.update({
+  id: '/practice/$exerciseId',
+  path: '/practice/$exerciseId',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppLearnerUserIdRoute = AppLearnerUserIdRouteImport.update({
   id: '/learner/$userId',
@@ -112,6 +125,12 @@ const AppAnalyzeResultRoute = AppAnalyzeResultRouteImport.update({
   path: '/result',
   getParentRoute: () => AppAnalyzeRoute,
 } as any)
+const AppPracticeAttemptsAttemptIdRoute =
+  AppPracticeAttemptsAttemptIdRouteImport.update({
+    id: '/practice/attempts/$attemptId',
+    path: '/practice/attempts/$attemptId',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -130,7 +149,10 @@ export interface FileRoutesByFullPath {
   '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
   '/app/learner/$userId': typeof AppLearnerUserIdRoute
+  '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors/': typeof AppInstructorsIndexRoute
+  '/app/practice/': typeof AppPracticeIndexRoute
+  '/app/practice/attempts/$attemptId': typeof AppPracticeAttemptsAttemptIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,7 +169,10 @@ export interface FileRoutesByTo {
   '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
   '/app/learner/$userId': typeof AppLearnerUserIdRoute
+  '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors': typeof AppInstructorsIndexRoute
+  '/app/practice': typeof AppPracticeIndexRoute
+  '/app/practice/attempts/$attemptId': typeof AppPracticeAttemptsAttemptIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,7 +192,10 @@ export interface FileRoutesById {
   '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
   '/app/learner/$userId': typeof AppLearnerUserIdRoute
+  '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors/': typeof AppInstructorsIndexRoute
+  '/app/practice/': typeof AppPracticeIndexRoute
+  '/app/practice/attempts/$attemptId': typeof AppPracticeAttemptsAttemptIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,7 +216,10 @@ export interface FileRouteTypes {
     | '/app/analyze/result'
     | '/app/instructors/$id'
     | '/app/learner/$userId'
+    | '/app/practice/$exerciseId'
     | '/app/instructors/'
+    | '/app/practice/'
+    | '/app/practice/attempts/$attemptId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -205,7 +236,10 @@ export interface FileRouteTypes {
     | '/app/analyze/result'
     | '/app/instructors/$id'
     | '/app/learner/$userId'
+    | '/app/practice/$exerciseId'
     | '/app/instructors'
+    | '/app/practice'
+    | '/app/practice/attempts/$attemptId'
   id:
     | '__root__'
     | '/'
@@ -224,7 +258,10 @@ export interface FileRouteTypes {
     | '/app/analyze/result'
     | '/app/instructors/$id'
     | '/app/learner/$userId'
+    | '/app/practice/$exerciseId'
     | '/app/instructors/'
+    | '/app/practice/'
+    | '/app/practice/attempts/$attemptId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -328,12 +365,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyzeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/practice/': {
+      id: '/app/practice/'
+      path: '/practice'
+      fullPath: '/app/practice/'
+      preLoaderRoute: typeof AppPracticeIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/instructors/': {
       id: '/app/instructors/'
       path: '/'
       fullPath: '/app/instructors/'
       preLoaderRoute: typeof AppInstructorsIndexRouteImport
       parentRoute: typeof AppInstructorsRoute
+    }
+    '/app/practice/$exerciseId': {
+      id: '/app/practice/$exerciseId'
+      path: '/practice/$exerciseId'
+      fullPath: '/app/practice/$exerciseId'
+      preLoaderRoute: typeof AppPracticeExerciseIdRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/learner/$userId': {
       id: '/app/learner/$userId'
@@ -355,6 +406,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/analyze/result'
       preLoaderRoute: typeof AppAnalyzeResultRouteImport
       parentRoute: typeof AppAnalyzeRoute
+    }
+    '/app/practice/attempts/$attemptId': {
+      id: '/app/practice/attempts/$attemptId'
+      path: '/practice/attempts/$attemptId'
+      fullPath: '/app/practice/attempts/$attemptId'
+      preLoaderRoute: typeof AppPracticeAttemptsAttemptIdRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
@@ -395,6 +453,9 @@ interface AppRouteChildren {
   AppStudentsRoute: typeof AppStudentsRoute
   AppIndexRoute: typeof AppIndexRoute
   AppLearnerUserIdRoute: typeof AppLearnerUserIdRoute
+  AppPracticeExerciseIdRoute: typeof AppPracticeExerciseIdRoute
+  AppPracticeIndexRoute: typeof AppPracticeIndexRoute
+  AppPracticeAttemptsAttemptIdRoute: typeof AppPracticeAttemptsAttemptIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -407,6 +468,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppStudentsRoute: AppStudentsRoute,
   AppIndexRoute: AppIndexRoute,
   AppLearnerUserIdRoute: AppLearnerUserIdRoute,
+  AppPracticeExerciseIdRoute: AppPracticeExerciseIdRoute,
+  AppPracticeIndexRoute: AppPracticeIndexRoute,
+  AppPracticeAttemptsAttemptIdRoute: AppPracticeAttemptsAttemptIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

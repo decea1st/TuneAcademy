@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { Pill } from "@/components/tuneacademy/Pill";
-import { useAuth } from "@/contexts/AuthContext";
+import { postLoginPath, useAuth } from "@/contexts/AuthContext";
 import { formatAuthError } from "@/lib/authMessages";
 import { brandTheme, musicImages } from "@/lib/theme";
 import { useState } from "react";
@@ -50,14 +50,15 @@ function SignupPage() {
     setBusy(true);
     try {
       // One request creates the account and logs the new user in.
-      await signUp({
+      const me = await signUp({
         email: mail,
         password: pw,
         fullName,
         role: role === "instructor" ? "INSTRUCTOR" : "LEARNER",
       });
       toast.success("Account created");
-      nav({ to: "/onboarding", replace: true });
+      // Learners go straight to the app; instructors still go to onboarding (rebuilt with Marketplace profiles).
+      nav({ to: postLoginPath(me), replace: true });
     } catch (err) {
       toast.error(formatAuthError(err));
     } finally {

@@ -10,7 +10,7 @@ const learnerNavTabs = [
    { to: "/app/musireels", label: "Riffs", icon: PlayCircle },
    { to: "/app/instructors", label: "Instructors", icon: Users },
    { to: "/app/messages", label: "Messages", icon: MessageSquareText },
-   { to: "/app/analyze", label: "Analyze", icon: Mic },
+   { to: "/app/practice", label: "Practice", icon: Mic },
    { to: "/app/profile", label: "Profile", icon: UserCircle },
 ];
 
