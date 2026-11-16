@@ -26,6 +26,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/health", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/signup", "/api/auth/login").permitAll()
+                // The public instructor directory: guests can browse it. Careful: "instructors" (plural)
+                // is public, "instructor" (below) is instructor-only. "/*" opens exactly one level,
+                // so anything added deeper under /api/instructors/ still needs a login.
+                .requestMatchers(HttpMethod.GET, "/api/instructors", "/api/instructors/*").permitAll()
                 // Convention: every instructor-only endpoint lives under /api/instructor/.
                 .requestMatchers("/api/instructor/**").hasRole("INSTRUCTOR")
                 .anyRequest().authenticated()

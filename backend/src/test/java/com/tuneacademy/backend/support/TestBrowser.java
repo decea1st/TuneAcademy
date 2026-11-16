@@ -45,6 +45,13 @@ public class TestBrowser {
         return http.get().uri(path).retrieve().body(type);
     }
 
+    /** The HTTP status of a GET, without treating 4xx as an error. */
+    public int getStatus(String path) {
+        return http.get().uri(path).retrieve()
+            .onStatus(code -> true, (request, response) -> {})
+            .toBodilessEntity().getStatusCode().value();
+    }
+
     public <T> T put(String path, Object body, Class<T> type) {
         return http.put().uri(path)
             .header("X-XSRF-TOKEN", csrfToken())
