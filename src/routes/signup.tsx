@@ -57,7 +57,7 @@ function SignupPage() {
         role: role === "instructor" ? "INSTRUCTOR" : "LEARNER",
       });
       toast.success("Account created");
-      // Learners go straight to the app; instructors still go to onboarding (rebuilt with Marketplace profiles).
+      // A new account has no profile yet, so this goes to onboarding.
       nav({ to: postLoginPath(me), replace: true });
     } catch (err) {
       toast.error(formatAuthError(err));

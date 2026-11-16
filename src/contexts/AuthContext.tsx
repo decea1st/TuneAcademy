@@ -63,9 +63,9 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | null>(null);
 
-/** Where to send someone right after they log in. */
+/** Where to send someone right after they sign up or log in: anyone without a profile fills it in first. */
 export function postLoginPath(me: Me): "/app" | "/onboarding" {
-  return me.role === "INSTRUCTOR" && !me.onboardingComplete ? "/onboarding" : "/app";
+  return me.onboardingComplete ? "/app" : "/onboarding";
 }
 
 /** Asks the backend who is logged in. A 401 just means "nobody". */
