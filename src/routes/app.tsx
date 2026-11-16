@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { AppNav } from "@/components/tuneacademy/AppNav";
-import { ChatbotFab } from "@/components/tuneacademy/ChatbotFab";
 import { RequireAccountProvider } from "@/components/tuneacademy/RequireAccount";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -29,7 +28,6 @@ function AppLayout() {
     <RequireAccountProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Outlet />
-        <ChatbotFab />
         <AppNav />
       </div>
     </RequireAccountProvider>

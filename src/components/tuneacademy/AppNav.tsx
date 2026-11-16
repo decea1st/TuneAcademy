@@ -1,13 +1,12 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Inbox, Mic, PlayCircle, UserCircle, Users } from "lucide-react";
+import { Home, Inbox, Mic, UserCircle, Users } from "lucide-react";
 import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
-// Messaging and the Students page are cut; "Requests" is where learners and instructors connect now.
+// "Requests" is where learners and instructors connect.
 const learnerNavTabs = [
    { to: "/app", label: "Home", icon: Home, exact: true },
-   { to: "/app/musireels", label: "Riffs", icon: PlayCircle },
    { to: "/app/instructors", label: "Instructors", icon: Users },
    { to: "/app/requests", label: "Requests", icon: Inbox },
    { to: "/app/practice", label: "Practice", icon: Mic },
@@ -16,7 +15,6 @@ const learnerNavTabs = [
 
 const instructorNavTabs = [
    { to: "/app", label: "Home", icon: Home, exact: true },
-   { to: "/app/musireels", label: "Riffs", icon: PlayCircle },
    { to: "/app/requests", label: "Requests", icon: Inbox },
    { to: "/app/profile", label: "Profile", icon: UserCircle },
 ];

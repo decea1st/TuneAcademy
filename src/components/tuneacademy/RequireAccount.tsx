@@ -40,8 +40,7 @@ export function RequireAccountProvider({ children }: { children: ReactNode }) {
                <DialogHeader>
                   <DialogTitle>Create an account to continue</DialogTitle>
                   <DialogDescription>
-                     You are browsing TuneAcademy as a guest. Messaging instructors, requesting lessons, and posting need a
-                     free account.
+                     You are browsing TuneAcademy as a guest. Requesting lessons needs a free account.
                   </DialogDescription>
                </DialogHeader>
                <DialogFooter className="gap-2 sm:gap-2">

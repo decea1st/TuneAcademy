@@ -15,20 +15,13 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
-import { Route as AppStudentsRouteImport } from './routes/app.students'
 import { Route as AppRequestsRouteImport } from './routes/app.requests'
 import { Route as AppProfileRouteImport } from './routes/app.profile'
-import { Route as AppMusireelsRouteImport } from './routes/app.musireels'
-import { Route as AppMessagesRouteImport } from './routes/app.messages'
-import { Route as AppMeetingRouteImport } from './routes/app.meeting'
 import { Route as AppInstructorsRouteImport } from './routes/app.instructors'
-import { Route as AppAnalyzeRouteImport } from './routes/app.analyze'
 import { Route as AppPracticeIndexRouteImport } from './routes/app.practice.index'
 import { Route as AppInstructorsIndexRouteImport } from './routes/app.instructors.index'
 import { Route as AppPracticeExerciseIdRouteImport } from './routes/app.practice.$exerciseId'
-import { Route as AppLearnerUserIdRouteImport } from './routes/app.learner.$userId'
 import { Route as AppInstructorsIdRouteImport } from './routes/app.instructors.$id'
-import { Route as AppAnalyzeResultRouteImport } from './routes/app.analyze.result'
 import { Route as AppPracticeAttemptsAttemptIdRouteImport } from './routes/app.practice.attempts.$attemptId'
 
 const SignupRoute = SignupRouteImport.update({
@@ -61,11 +54,6 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppStudentsRoute = AppStudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppRequestsRoute = AppRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
@@ -76,29 +64,9 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
-const AppMusireelsRoute = AppMusireelsRouteImport.update({
-  id: '/musireels',
-  path: '/musireels',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMessagesRoute = AppMessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMeetingRoute = AppMeetingRouteImport.update({
-  id: '/meeting',
-  path: '/meeting',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppInstructorsRoute = AppInstructorsRouteImport.update({
   id: '/instructors',
   path: '/instructors',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppAnalyzeRoute = AppAnalyzeRouteImport.update({
-  id: '/analyze',
-  path: '/analyze',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPracticeIndexRoute = AppPracticeIndexRouteImport.update({
@@ -116,20 +84,10 @@ const AppPracticeExerciseIdRoute = AppPracticeExerciseIdRouteImport.update({
   path: '/practice/$exerciseId',
   getParentRoute: () => AppRoute,
 } as any)
-const AppLearnerUserIdRoute = AppLearnerUserIdRouteImport.update({
-  id: '/learner/$userId',
-  path: '/learner/$userId',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppInstructorsIdRoute = AppInstructorsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AppInstructorsRoute,
-} as any)
-const AppAnalyzeResultRoute = AppAnalyzeResultRouteImport.update({
-  id: '/result',
-  path: '/result',
-  getParentRoute: () => AppAnalyzeRoute,
 } as any)
 const AppPracticeAttemptsAttemptIdRoute =
   AppPracticeAttemptsAttemptIdRouteImport.update({
@@ -144,18 +102,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
-  '/app/analyze': typeof AppAnalyzeRouteWithChildren
   '/app/instructors': typeof AppInstructorsRouteWithChildren
-  '/app/meeting': typeof AppMeetingRoute
-  '/app/messages': typeof AppMessagesRoute
-  '/app/musireels': typeof AppMusireelsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/requests': typeof AppRequestsRoute
-  '/app/students': typeof AppStudentsRoute
   '/app/': typeof AppIndexRoute
-  '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
-  '/app/learner/$userId': typeof AppLearnerUserIdRoute
   '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors/': typeof AppInstructorsIndexRoute
   '/app/practice/': typeof AppPracticeIndexRoute
@@ -166,17 +117,10 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
-  '/app/analyze': typeof AppAnalyzeRouteWithChildren
-  '/app/meeting': typeof AppMeetingRoute
-  '/app/messages': typeof AppMessagesRoute
-  '/app/musireels': typeof AppMusireelsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/requests': typeof AppRequestsRoute
-  '/app/students': typeof AppStudentsRoute
   '/app': typeof AppIndexRoute
-  '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
-  '/app/learner/$userId': typeof AppLearnerUserIdRoute
   '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors': typeof AppInstructorsIndexRoute
   '/app/practice': typeof AppPracticeIndexRoute
@@ -189,18 +133,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
-  '/app/analyze': typeof AppAnalyzeRouteWithChildren
   '/app/instructors': typeof AppInstructorsRouteWithChildren
-  '/app/meeting': typeof AppMeetingRoute
-  '/app/messages': typeof AppMessagesRoute
-  '/app/musireels': typeof AppMusireelsRoute
   '/app/profile': typeof AppProfileRoute
   '/app/requests': typeof AppRequestsRoute
-  '/app/students': typeof AppStudentsRoute
   '/app/': typeof AppIndexRoute
-  '/app/analyze/result': typeof AppAnalyzeResultRoute
   '/app/instructors/$id': typeof AppInstructorsIdRoute
-  '/app/learner/$userId': typeof AppLearnerUserIdRoute
   '/app/practice/$exerciseId': typeof AppPracticeExerciseIdRoute
   '/app/instructors/': typeof AppInstructorsIndexRoute
   '/app/practice/': typeof AppPracticeIndexRoute
@@ -214,18 +151,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
-    | '/app/analyze'
     | '/app/instructors'
-    | '/app/meeting'
-    | '/app/messages'
-    | '/app/musireels'
     | '/app/profile'
     | '/app/requests'
-    | '/app/students'
     | '/app/'
-    | '/app/analyze/result'
     | '/app/instructors/$id'
-    | '/app/learner/$userId'
     | '/app/practice/$exerciseId'
     | '/app/instructors/'
     | '/app/practice/'
@@ -236,17 +166,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
-    | '/app/analyze'
-    | '/app/meeting'
-    | '/app/messages'
-    | '/app/musireels'
     | '/app/profile'
     | '/app/requests'
-    | '/app/students'
     | '/app'
-    | '/app/analyze/result'
     | '/app/instructors/$id'
-    | '/app/learner/$userId'
     | '/app/practice/$exerciseId'
     | '/app/instructors'
     | '/app/practice'
@@ -258,18 +181,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/signup'
-    | '/app/analyze'
     | '/app/instructors'
-    | '/app/meeting'
-    | '/app/messages'
-    | '/app/musireels'
     | '/app/profile'
     | '/app/requests'
-    | '/app/students'
     | '/app/'
-    | '/app/analyze/result'
     | '/app/instructors/$id'
-    | '/app/learner/$userId'
     | '/app/practice/$exerciseId'
     | '/app/instructors/'
     | '/app/practice/'
@@ -328,13 +244,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/students': {
-      id: '/app/students'
-      path: '/students'
-      fullPath: '/app/students'
-      preLoaderRoute: typeof AppStudentsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/requests': {
       id: '/app/requests'
       path: '/requests'
@@ -349,39 +258,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/musireels': {
-      id: '/app/musireels'
-      path: '/musireels'
-      fullPath: '/app/musireels'
-      preLoaderRoute: typeof AppMusireelsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/messages': {
-      id: '/app/messages'
-      path: '/messages'
-      fullPath: '/app/messages'
-      preLoaderRoute: typeof AppMessagesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/meeting': {
-      id: '/app/meeting'
-      path: '/meeting'
-      fullPath: '/app/meeting'
-      preLoaderRoute: typeof AppMeetingRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/instructors': {
       id: '/app/instructors'
       path: '/instructors'
       fullPath: '/app/instructors'
       preLoaderRoute: typeof AppInstructorsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/analyze': {
-      id: '/app/analyze'
-      path: '/analyze'
-      fullPath: '/app/analyze'
-      preLoaderRoute: typeof AppAnalyzeRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/practice/': {
@@ -405,26 +286,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPracticeExerciseIdRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/learner/$userId': {
-      id: '/app/learner/$userId'
-      path: '/learner/$userId'
-      fullPath: '/app/learner/$userId'
-      preLoaderRoute: typeof AppLearnerUserIdRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/instructors/$id': {
       id: '/app/instructors/$id'
       path: '/$id'
       fullPath: '/app/instructors/$id'
       preLoaderRoute: typeof AppInstructorsIdRouteImport
       parentRoute: typeof AppInstructorsRoute
-    }
-    '/app/analyze/result': {
-      id: '/app/analyze/result'
-      path: '/result'
-      fullPath: '/app/analyze/result'
-      preLoaderRoute: typeof AppAnalyzeResultRouteImport
-      parentRoute: typeof AppAnalyzeRoute
     }
     '/app/practice/attempts/$attemptId': {
       id: '/app/practice/attempts/$attemptId'
@@ -435,18 +302,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface AppAnalyzeRouteChildren {
-  AppAnalyzeResultRoute: typeof AppAnalyzeResultRoute
-}
-
-const AppAnalyzeRouteChildren: AppAnalyzeRouteChildren = {
-  AppAnalyzeResultRoute: AppAnalyzeResultRoute,
-}
-
-const AppAnalyzeRouteWithChildren = AppAnalyzeRoute._addFileChildren(
-  AppAnalyzeRouteChildren,
-)
 
 interface AppInstructorsRouteChildren {
   AppInstructorsIdRoute: typeof AppInstructorsIdRoute
@@ -463,32 +318,20 @@ const AppInstructorsRouteWithChildren = AppInstructorsRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
-  AppAnalyzeRoute: typeof AppAnalyzeRouteWithChildren
   AppInstructorsRoute: typeof AppInstructorsRouteWithChildren
-  AppMeetingRoute: typeof AppMeetingRoute
-  AppMessagesRoute: typeof AppMessagesRoute
-  AppMusireelsRoute: typeof AppMusireelsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppRequestsRoute: typeof AppRequestsRoute
-  AppStudentsRoute: typeof AppStudentsRoute
   AppIndexRoute: typeof AppIndexRoute
-  AppLearnerUserIdRoute: typeof AppLearnerUserIdRoute
   AppPracticeExerciseIdRoute: typeof AppPracticeExerciseIdRoute
   AppPracticeIndexRoute: typeof AppPracticeIndexRoute
   AppPracticeAttemptsAttemptIdRoute: typeof AppPracticeAttemptsAttemptIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAnalyzeRoute: AppAnalyzeRouteWithChildren,
   AppInstructorsRoute: AppInstructorsRouteWithChildren,
-  AppMeetingRoute: AppMeetingRoute,
-  AppMessagesRoute: AppMessagesRoute,
-  AppMusireelsRoute: AppMusireelsRoute,
   AppProfileRoute: AppProfileRoute,
   AppRequestsRoute: AppRequestsRoute,
-  AppStudentsRoute: AppStudentsRoute,
   AppIndexRoute: AppIndexRoute,
-  AppLearnerUserIdRoute: AppLearnerUserIdRoute,
   AppPracticeExerciseIdRoute: AppPracticeExerciseIdRoute,
   AppPracticeIndexRoute: AppPracticeIndexRoute,
   AppPracticeAttemptsAttemptIdRoute: AppPracticeAttemptsAttemptIdRoute,

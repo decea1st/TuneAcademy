@@ -62,103 +62,31 @@ The goal is a model that grows with the platform, one that gets smarter the more
 
 # Running TuneAcademy
 
-The Vite + TanStack app lives at the repository root.
+Three pieces run locally: Postgres in Docker, the Spring Boot backend in `backend/`, and the Vite + React frontend at the repository root. You need Docker, Java 21 and Node 20+.
 
 ### Run locally
 
-From the repository root:
+From the repository root. The backend and the frontend each keep running in their own terminal.
 
 ```bash
+# 1. Database (Postgres on port 5432)
+docker compose up -d
+
+# 2. Backend (port 8080). Flyway creates the tables and seeds the exercises and demo instructors.
+cd backend
+./mvnw spring-boot:run        # Windows: mvnw.cmd spring-boot:run
+
+# 3. Frontend (port 5173). Vite forwards /api to the backend.
 npm install
 npm run dev
 ```
 
-After `npm run dev`, open the URL Vite prints in the terminal (usually `http://localhost:5173`).
+Then open `http://localhost:5173`. No `.env` file is needed.
 
-### Cloud Functions (`functions`)
-
-The Firebase Cloud Functions package also needs its own install step and a **`.env`** in that folder.
-
-From the repository root:
+### Checks
 
 ```bash
-cd functions
-npm install
+npx tsc --noEmit             # frontend type check
+npm run build                # frontend build
+cd backend && ./mvnw test    # backend tests (Docker must be running: they start their own Postgres)
 ```
-
-Create a file named **`.env`** in **`functions`** (next to that folder’s `package.json`). Use the same variables and credential values as the project’s **`functions/.env`** (that file is for local use and should not be committed; if you are joining the team, copy the values from a teammate’s secure copy or your own Google OAuth, redirect URI, app origin, and ElevenLabs key).
-
-| Variable | Purpose |
-| --- | --- |
-| `GOOGLE_OAUTH_CLIENT_ID` | Google OAuth web client ID (Calendar / Meet flows) |
-| `GOOGLE_OAUTH_CLIENT_SECRET` | Google OAuth client secret |
-| `GOOGLE_OAUTH_REDIRECT_URI` | OAuth redirect URL (must match your deployed callback function URL or local emulator setup) |
-| `APP_ORIGIN` | Frontend origin used for redirects (e.g. `http://localhost:5173` when running Vite) |
-| `ELEVENLABS_API_KEY` | ElevenLabs API key for TTS |
-
-Optional: `ELEVENLABS_TTS_VOICE_ID` / `ELEVENLABS_VOICE_ID`, `ELEVENLABS_TTS_MODEL_ID`, `ANALYSIS_API_URL` (defaults exist where noted in code).
-
-```bash
-GOOGLE_OAUTH_CLIENT_ID=
-GOOGLE_OAUTH_CLIENT_SECRET=
-GOOGLE_OAUTH_REDIRECT_URI=
-APP_ORIGIN=http://localhost:5173
-ELEVENLABS_API_KEY=
-```
-
-Do not commit real Cloud Functions `.env` files.
-
-### Environment variables
-
-Create a file named **`.env`** at the **repository root** (next to `package.json`). 
-
-#### Required for Firebase
-
-These values come from the Firebase console: Project settings → Your apps → Web app config.
-
-| Variable | Purpose |
-| --- | --- |
-| `VITE_FIREBASE_API_KEY` | Web API key |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Auth domain (e.g. `your-project.firebaseapp.com`) |
-| `VITE_FIREBASE_PROJECT_ID` | Project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Cloud Storage bucket |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Messaging sender ID |
-| `VITE_FIREBASE_APP_ID` | App ID |
-
-#### Optional
-
-| Variable | Purpose |
-| --- | --- |
-| `VITE_FIREBASE_MEASUREMENT_ID` | Google Analytics for Firebase (only if enabled for the app) |
-| `VITE_BYPASS_AUTH` | Set to `true` to skip auth checks in the app shell during local development (see `src/routes/app.tsx`) |
-
-Example shape (replace placeholders with your own values):
-
-```env
-VITE_FIREBASE_API_KEY=your-api-key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=1234567890
-VITE_FIREBASE_APP_ID=1:1234567890:web:abcdef
-# VITE_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
-# VITE_BYPASS_AUTH=true
-```
-
-Do not commit real `.env` files; keep secrets out of git.
-
-### Hackathon leakage-prevention demo
-
-TuneAcademy demonstrates link-leakage prevention in the frontend so judges can see the intended product behavior without requiring production-grade backend enforcement.
-
-- Google Meet URLs are treated as protected room details, not user-facing links.
-- The session page hides the raw Meet URL and removes copy-link sharing.
-- The join button unlocks 10 minutes before the scheduled lesson and closes after the lesson ends.
-- Users join through TuneAcademy first, which records attendance before opening the Meet room.
-- A visible "Leakage Shield" panel explains that links are hidden, copy sharing is removed, and budget is charged after both sides join.
-- In-app messages block obvious emails, phone numbers, outside URLs, Google Meet links, Zoom/WhatsApp/Discord mentions, and common payment handles.
-- Student-facing tutoring cards replace direct email exposure with protected-profile language.
-
-For production, the next step would be moving enforcement into trusted backend code: stricter Firestore rules, backend-created Meet spaces, backend moderation, payment enforcement, and Google Meet event verification where available.
-
-repo bot test....
