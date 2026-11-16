@@ -4,8 +4,9 @@ import { LogoMark } from "@/components/tuneacademy/LogoMark";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
-// "Requests" is where learners and instructors connect.
-const learnerNavTabs = [
+// Same tabs for both roles. "Requests" is where learners and instructors connect;
+// the pages themselves adapt to the role (e.g. only learners see "Request lessons").
+const tabs = [
   { to: "/app", label: "Home", icon: Home, exact: true },
   { to: "/app/instructors", label: "Instructors", icon: Users },
   { to: "/app/requests", label: "Requests", icon: Inbox },
@@ -13,16 +14,9 @@ const learnerNavTabs = [
   { to: "/app/profile", label: "Profile", icon: UserCircle },
 ];
 
-const instructorNavTabs = [
-  { to: "/app", label: "Home", icon: Home, exact: true },
-  { to: "/app/requests", label: "Requests", icon: Inbox },
-  { to: "/app/profile", label: "Profile", icon: UserCircle },
-];
-
 export function AppNav() {
   const { pathname } = useLocation();
-  const { userDoc, isGuest } = useAuth();
-  const tabs = userDoc?.role === "instructor" ? instructorNavTabs : learnerNavTabs;
+  const { isGuest } = useAuth();
   return (
     <nav className="fixed inset-x-0 top-0 z-40 border-b border-[#fffdf5]/15 bg-[#0b1510]/86 backdrop-blur-xl">
       <div className="mx-auto flex h-18 max-w-360 items-center justify-between px-6 lg:px-10">

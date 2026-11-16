@@ -29,7 +29,7 @@ function HomePage() {
       title: "Instructors",
       icon: Users,
       text: isInstructor
-        ? "Browse the instructor directory."
+        ? "See who else teaches on TuneAcademy."
         : "Browse instructors and request lessons.",
     },
     {
@@ -40,7 +40,7 @@ function HomePage() {
         ? "Accept or decline lesson requests from learners."
         : "Follow the lesson requests you've sent.",
     },
-  ] as const;
+  ];
 
   return (
     <AppShell>
