@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
 
-export function ScoreBar({ label, value, animate = false }: { label: string; value: number; animate?: boolean }) {
+export function ScoreBar({
+  label,
+  value,
+  animate = false,
+}: {
+  label: string;
+  value: number;
+  animate?: boolean;
+}) {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-xs">

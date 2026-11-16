@@ -43,7 +43,10 @@ type ApiOptions = {
   body?: unknown;
 };
 
-export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOptions = {}): Promise<T> {
+export async function apiFetch<T>(
+  path: string,
+  { method = "GET", body }: ApiOptions = {},
+): Promise<T> {
   const headers: Record<string, string> = {};
   let payload: BodyInit | undefined;
 

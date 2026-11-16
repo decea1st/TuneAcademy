@@ -95,7 +95,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    const user = await apiFetch<Me>("/api/auth/login", { method: "POST", body: { email, password } });
+    const user = await apiFetch<Me>("/api/auth/login", {
+      method: "POST",
+      body: { email, password },
+    });
     setMe(user);
     return user;
   }, []);
@@ -125,7 +128,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email: me.email,
             avatarUrl: "", // avatar upload is cut; pages fall back to initials
             bio: me.bio,
-            skillLevel: me.skillLevel ? (me.skillLevel.toLowerCase() as AuthUserDoc["skillLevel"]) : undefined,
+            skillLevel: me.skillLevel
+              ? (me.skillLevel.toLowerCase() as AuthUserDoc["skillLevel"])
+              : undefined,
             instruments: me.instruments,
             onboardingComplete: me.onboardingComplete,
           }

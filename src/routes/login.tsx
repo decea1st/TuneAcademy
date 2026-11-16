@@ -74,10 +74,14 @@ function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className={`inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}>
+            <p
+              className={`inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}
+            >
               Back to the studio
             </p>
-            <h1 className={`mt-5 text-6xl font-black leading-[0.9] tracking-normal ${brandTheme.ink}`}>
+            <h1
+              className={`mt-5 text-6xl font-black leading-[0.9] tracking-normal ${brandTheme.ink}`}
+            >
               Pick up where the last take left off.
             </h1>
             <p className={`mt-6 max-w-xl text-lg leading-8 ${brandTheme.inkSoft}`}>
@@ -149,7 +153,10 @@ function LoginPage() {
             </Link>
           </p>
           <p className="mt-2 text-center text-sm text-[#e8f4df]/70">
-            <Link to="/app" className="underline underline-offset-4 transition hover:text-[#fffdf5]">
+            <Link
+              to="/app"
+              className="underline underline-offset-4 transition hover:text-[#fffdf5]"
+            >
               or explore the app without an account →
             </Link>
           </p>

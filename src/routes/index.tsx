@@ -92,10 +92,14 @@ function Welcome() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className={`mb-5 inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}>
+            <p
+              className={`mb-5 inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}
+            >
               Tune the lesson to the player
             </p>
-            <h1 className={`max-w-4xl text-5xl font-black leading-[0.88] tracking-normal sm:text-6xl lg:text-7xl ${brandTheme.ink}`}>
+            <h1
+              className={`max-w-4xl text-5xl font-black leading-[0.88] tracking-normal sm:text-6xl lg:text-7xl ${brandTheme.ink}`}
+            >
               Hear the flaw.
               <span className={`block ${brandTheme.gold}`}>Find the teacher.</span>
               Fix the next take.
@@ -107,10 +111,7 @@ function Welcome() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link to="/signup" search={{ role: "learner" }}>
-                <Pill
-                  size="lg"
-                  className={`w-full px-7 sm:w-auto ${brandTheme.primaryButton}`}
-                >
+                <Pill size="lg" className={`w-full px-7 sm:w-auto ${brandTheme.primaryButton}`}>
                   Start learning
                 </Pill>
               </Link>
@@ -142,14 +143,12 @@ function Welcome() {
             aria-label="TuneAcademy sample analysis"
           >
             <div className="absolute left-4 top-8 h-80 w-56 rotate-[-10deg] overflow-hidden rounded-lg border border-[#fffdf5]/20 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:left-16">
-              <img
-                src={musicImages.piano}
-                alt=""
-                className="h-full w-full object-cover"
-              />
+              <img src={musicImages.piano} alt="" className="h-full w-full object-cover" />
             </div>
 
-            <div className={`absolute right-0 top-0 w-full max-w-95 rounded-lg p-5 ${brandTheme.glass}`}>
+            <div
+              className={`absolute right-0 top-0 w-full max-w-95 rounded-lg p-5 ${brandTheme.glass}`}
+            >
               <div className="flex items-center justify-between text-xs font-bold uppercase tracking-[0.18em] text-[#a6eee3]">
                 <span>AI take review</span>
                 <span>02:14</span>
@@ -186,7 +185,7 @@ function Welcome() {
               <p className="text-xs font-black uppercase tracking-[0.2em]">Match found</p>
               <div className="mt-4 flex items-center gap-4">
                 <img
-                src={musicImages.singer}
+                  src={musicImages.singer}
                   alt=""
                   className="h-16 w-16 rounded-lg object-cover"
                 />

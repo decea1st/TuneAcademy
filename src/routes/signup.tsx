@@ -93,11 +93,17 @@ function SignupPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className={`inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}>
+            <p
+              className={`inline-flex rounded-lg border border-[#ffd666]/40 bg-[#0b1510]/45 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] ${brandTheme.gold} backdrop-blur`}
+            >
               {isInstructor ? "Build your studio roster" : "Start with a sharper target"}
             </p>
-            <h1 className={`mt-5 text-6xl font-black leading-[0.9] tracking-normal ${brandTheme.ink}`}>
-              {isInstructor ? "Turn feedback into better students." : "Make every practice take count."}
+            <h1
+              className={`mt-5 text-6xl font-black leading-[0.9] tracking-normal ${brandTheme.ink}`}
+            >
+              {isInstructor
+                ? "Turn feedback into better students."
+                : "Make every practice take count."}
             </h1>
             <p className={`mt-6 max-w-xl text-lg leading-8 ${brandTheme.inkSoft}`}>
               {isInstructor
@@ -150,8 +156,20 @@ function SignupPage() {
           </div>
 
           <form onSubmit={(e) => void submit(e)} className="mt-6 space-y-4">
-            <Field label="Full name" value={name} onChange={setName} type="text" autoComplete="name" />
-            <Field label="Email" value={email} onChange={setEmail} type="email" autoComplete="email" />
+            <Field
+              label="Full name"
+              value={name}
+              onChange={setName}
+              type="text"
+              autoComplete="name"
+            />
+            <Field
+              label="Email"
+              value={email}
+              onChange={setEmail}
+              type="email"
+              autoComplete="email"
+            />
             <Field
               label="Password"
               value={pw}
@@ -172,7 +190,11 @@ function SignupPage() {
               className={`mt-3 w-full ${brandTheme.primaryButton}`}
               disabled={busy}
             >
-              {busy ? "Creating account..." : isInstructor ? "Continue as instructor" : "Continue as learner"}
+              {busy
+                ? "Creating account..."
+                : isInstructor
+                  ? "Continue as instructor"
+                  : "Continue as learner"}
             </Pill>
           </form>
 
@@ -183,7 +205,10 @@ function SignupPage() {
             </Link>
           </p>
           <p className="mt-2 text-center text-sm text-[#e8f4df]/70">
-            <Link to="/app" className="underline underline-offset-4 transition hover:text-[#fffdf5]">
+            <Link
+              to="/app"
+              className="underline underline-offset-4 transition hover:text-[#fffdf5]"
+            >
               or explore the app without an account →
             </Link>
           </p>
