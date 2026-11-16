@@ -1,9 +1,24 @@
 ﻿import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/tuneacademy/AppShell";
 import { Avatar } from "@/components/tuneacademy/Avatar";
 import { Card } from "@/components/tuneacademy/Card";
+import { Pill } from "@/components/tuneacademy/Pill";
+import { useRequireAccount } from "@/components/tuneacademy/RequireAccount";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/AuthContext";
+import { MESSAGE_MAX, sendRequest } from "@/lib/requests";
 import {
   formatLevel,
   formatRate,
@@ -85,7 +100,7 @@ function ProfileCard({ instructor }: { instructor: Instructor }) {
       </div>
 
       <div className="space-y-6 px-5 py-5 sm:px-8 sm:py-7">
-        {/* Step 3 adds the "Request lessons" button here. */}
+        <RequestLessons instructor={instructor} />
 
         <dl className="grid gap-3 sm:grid-cols-3">
           {details.map((d) => (
@@ -109,5 +124,97 @@ function ProfileCard({ instructor }: { instructor: Instructor }) {
         </section>
       </div>
     </Card>
+  );
+}
+
+/**
+ * The "Request lessons" button and its dialog: just a message box.
+ * Learners see it; instructors don't. Guests get the existing "create an account" prompt.
+ */
+function RequestLessons({ instructor }: { instructor: Instructor }) {
+  const { me } = useAuth();
+  const { requireAccount } = useRequireAccount();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  if (me && me.role !== "LEARNER") return null;
+
+  function openDialog() {
+    setMessage("");
+    setSent(false);
+    setOpen(true);
+  }
+
+  async function send() {
+    setSending(true);
+    try {
+      await sendRequest(instructor.id, message.trim());
+      setSent(true);
+    } catch (e) {
+      // e.g. the backend's 409: "You already have a pending request with this instructor."
+      toast.error(e instanceof Error ? e.message : "Could not send the request.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <>
+      <Pill className="w-full" onClick={() => requireAccount(openDialog)}>
+        <Send className="h-4 w-4" /> Request lessons
+      </Pill>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-md">
+          {sent ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Request sent</DialogTitle>
+                <DialogDescription>
+                  {instructor.fullName} will accept or decline it. You can follow it under Requests.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="gap-2 sm:gap-2">
+                <Button variant="secondary" onClick={() => setOpen(false)}>
+                  Done
+                </Button>
+                <Button asChild>
+                  <Link to="/app/requests">See my requests</Link>
+                </Button>
+              </DialogFooter>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Request lessons with {instructor.fullName}</DialogTitle>
+                <DialogDescription>
+                  Say what you'd like to learn. Your email is only shared if they accept.
+                </DialogDescription>
+              </DialogHeader>
+              <Textarea
+                value={message}
+                maxLength={MESSAGE_MAX}
+                rows={5}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Hi! I'm a beginner and I'd love to learn…"
+              />
+              <p className="-mt-2 text-right text-[11px] text-muted-foreground">
+                {message.length}/{MESSAGE_MAX}
+              </p>
+              <DialogFooter className="gap-2 sm:gap-2">
+                <Button variant="secondary" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button disabled={sending || !message.trim()} onClick={() => void send()}>
+                  {sending ? "Sending…" : "Send request"}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
