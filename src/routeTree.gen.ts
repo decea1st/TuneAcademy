@@ -9,34 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AppIndexRouteImport } from './routes/app.index'
-import { Route as AppRequestsRouteImport } from './routes/app.requests'
-import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppInstructorsRouteImport } from './routes/app.instructors'
-import { Route as AppPracticeIndexRouteImport } from './routes/app.practice.index'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppRequestsRouteImport } from './routes/app.requests'
 import { Route as AppInstructorsIndexRouteImport } from './routes/app.instructors.index'
-import { Route as AppPracticeExerciseIdRouteImport } from './routes/app.practice.$exerciseId'
 import { Route as AppInstructorsIdRouteImport } from './routes/app.instructors.$id'
+import { Route as AppPracticeIndexRouteImport } from './routes/app.practice.index'
+import { Route as AppPracticeExerciseIdRouteImport } from './routes/app.practice.$exerciseId'
 import { Route as AppPracticeAttemptsAttemptIdRouteImport } from './routes/app.practice.attempts.$attemptId'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -44,9 +34,19 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -54,9 +54,9 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppRequestsRoute = AppRequestsRouteImport.update({
-  id: '/requests',
-  path: '/requests',
+const AppInstructorsRoute = AppInstructorsRouteImport.update({
+  id: '/instructors',
+  path: '/instructors',
   getParentRoute: () => AppRoute,
 } as any)
 const AppProfileRoute = AppProfileRouteImport.update({
@@ -64,14 +64,9 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
-const AppInstructorsRoute = AppInstructorsRouteImport.update({
-  id: '/instructors',
-  path: '/instructors',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPracticeIndexRoute = AppPracticeIndexRouteImport.update({
-  id: '/practice/',
-  path: '/practice/',
+const AppRequestsRoute = AppRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
   getParentRoute: () => AppRoute,
 } as any)
 const AppInstructorsIndexRoute = AppInstructorsIndexRouteImport.update({
@@ -79,15 +74,20 @@ const AppInstructorsIndexRoute = AppInstructorsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppInstructorsRoute,
 } as any)
-const AppPracticeExerciseIdRoute = AppPracticeExerciseIdRouteImport.update({
-  id: '/practice/$exerciseId',
-  path: '/practice/$exerciseId',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppInstructorsIdRoute = AppInstructorsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AppInstructorsRoute,
+} as any)
+const AppPracticeIndexRoute = AppPracticeIndexRouteImport.update({
+  id: '/practice/',
+  path: '/practice/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPracticeExerciseIdRoute = AppPracticeExerciseIdRouteImport.update({
+  id: '/practice/$exerciseId',
+  path: '/practice/$exerciseId',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppPracticeAttemptsAttemptIdRoute =
   AppPracticeAttemptsAttemptIdRouteImport.update({
@@ -202,25 +202,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -230,11 +216,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -244,11 +244,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/requests': {
-      id: '/app/requests'
-      path: '/requests'
-      fullPath: '/app/requests'
-      preLoaderRoute: typeof AppRequestsRouteImport
+    '/app/instructors': {
+      id: '/app/instructors'
+      path: '/instructors'
+      fullPath: '/app/instructors'
+      preLoaderRoute: typeof AppInstructorsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/profile': {
@@ -258,18 +258,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/instructors': {
-      id: '/app/instructors'
-      path: '/instructors'
-      fullPath: '/app/instructors'
-      preLoaderRoute: typeof AppInstructorsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/practice/': {
-      id: '/app/practice/'
-      path: '/practice'
-      fullPath: '/app/practice/'
-      preLoaderRoute: typeof AppPracticeIndexRouteImport
+    '/app/requests': {
+      id: '/app/requests'
+      path: '/requests'
+      fullPath: '/app/requests'
+      preLoaderRoute: typeof AppRequestsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/instructors/': {
@@ -279,19 +272,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppInstructorsIndexRouteImport
       parentRoute: typeof AppInstructorsRoute
     }
-    '/app/practice/$exerciseId': {
-      id: '/app/practice/$exerciseId'
-      path: '/practice/$exerciseId'
-      fullPath: '/app/practice/$exerciseId'
-      preLoaderRoute: typeof AppPracticeExerciseIdRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/instructors/$id': {
       id: '/app/instructors/$id'
       path: '/$id'
       fullPath: '/app/instructors/$id'
       preLoaderRoute: typeof AppInstructorsIdRouteImport
       parentRoute: typeof AppInstructorsRoute
+    }
+    '/app/practice/': {
+      id: '/app/practice/'
+      path: '/practice'
+      fullPath: '/app/practice/'
+      preLoaderRoute: typeof AppPracticeIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/practice/$exerciseId': {
+      id: '/app/practice/$exerciseId'
+      path: '/practice/$exerciseId'
+      fullPath: '/app/practice/$exerciseId'
+      preLoaderRoute: typeof AppPracticeExerciseIdRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/practice/attempts/$attemptId': {
       id: '/app/practice/attempts/$attemptId'

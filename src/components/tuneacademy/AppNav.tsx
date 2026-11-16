@@ -25,7 +25,7 @@ export function AppNav() {
   const tabs = userDoc?.role === "instructor" ? instructorNavTabs : learnerNavTabs;
   return (
     <nav className="fixed inset-x-0 top-0 z-40 border-b border-[#fffdf5]/15 bg-[#0b1510]/86 backdrop-blur-xl">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-10">
+      <div className="mx-auto flex h-18 max-w-360 items-center justify-between px-6 lg:px-10">
         <Link
           to="/app"
           className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.24em] text-[#fffdf5]"
