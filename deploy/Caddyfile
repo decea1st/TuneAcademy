@@ -1,0 +1,6 @@
+# Caddy gets and renews the HTTPS certificate for $DOMAIN by itself, redirects http:// to https://,
+# and passes every request on to Spring Boot.
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:8080
+}

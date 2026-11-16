@@ -1,0 +1,14 @@
+# Allowlist: only what the Dockerfile copies goes into the build. Keeps builds fast and keeps
+# local files like .env and node_modules out of the image.
+*
+!package.json
+!package-lock.json
+!index.html
+!vite.config.ts
+!tsconfig.json
+!public
+!src
+!backend/mvnw
+!backend/pom.xml
+!backend/.mvn
+!backend/src

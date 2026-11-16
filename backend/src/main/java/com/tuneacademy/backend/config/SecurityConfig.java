@@ -32,7 +32,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/instructors", "/api/instructors/*").permitAll()
                 // Convention: every instructor-only endpoint lives under /api/instructor/.
                 .requestMatchers("/api/instructor/**").hasRole("INSTRUCTOR")
-                .anyRequest().authenticated()
+                .requestMatchers("/api/**").authenticated()
+                // Everything else is the React app (pages, scripts, images), which guests load too.
+                // Its data still comes from /api, so this opens no data.
+                .anyRequest().permitAll()
             )
             // CSRF protection for a React app: Spring puts a random token in a cookie that
             // JavaScript can read (XSRF-TOKEN), and every POST/PUT/DELETE must send it back
